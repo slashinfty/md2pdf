@@ -1,0 +1,9 @@
+---
+header-includes: |
+    \usepackage[top=25mm,bottom=22mm,left=17mm,right=17mm]{geometry}
+    \usepackage{titling}
+    \setlength{\parindent}{0pt}
+    \def\arraystretch{2}
+    \setlength{\droptitle}{-20mm}
+    \pagenumbering{gobble}
+...
