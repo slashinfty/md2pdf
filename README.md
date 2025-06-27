@@ -13,6 +13,11 @@ title: INSERT TITLE
 ...
 ```
 
+For including images:
+```
+![&nbsp;](./file.png){ width=300px }
+```
+
 Convert with the following (no file extension):
 ```
 ./md2pdf.sh FILENAME
