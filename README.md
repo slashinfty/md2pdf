@@ -1,4 +1,4 @@
-# md2latex
+# md2pdf
 
 Markdown file(s) must be in the same folder as the .sh and .yaml
 
