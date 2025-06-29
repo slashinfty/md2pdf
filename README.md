@@ -13,7 +13,7 @@ title: INSERT TITLE
 ...
 ```
 
-For including images:
+For including images (change width as necessary):
 ```
 ![&nbsp;](./file.png){ width=300px }
 ```
