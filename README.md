@@ -3,7 +3,7 @@
 Markdown file(s) must be in the same folder as the .sh and .yaml
 
 ```
-chmod u+x ./md2pdf.sh
+chmod +x md2pdf.sh
 ```
 
 Include in markdown files:
