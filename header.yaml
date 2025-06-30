@@ -3,9 +3,9 @@ header-includes: |
     \usepackage[top=25mm,bottom=22mm,left=17mm,right=17mm]{geometry}
     \usepackage{titling}
     \usepackage[labelformat=empty]{caption}
+    \setlength{\droptitle}{-20mm}
     \setlength{\belowcaptionskip}{-14pt}
     \setlength{\parindent}{0pt}
     \def\arraystretch{2}
-    \setlength{\droptitle}{-20mm}
     \pagenumbering{gobble}
 ...
