@@ -58,15 +58,13 @@
                 const engine = new PdfTeXEngine();
                 await engine.loadEngine();
 
+                const preamble = document.getElementById("preamble").value;
                 const mainText = document.getElementById("main").value;
                 const title = document.getElementById("title").value;
                 const output = pandoc("-f markdown+pipe_tables+strikeout+tex_math_dollars -t latex", mainText);
 
                 const latex = String.raw`\documentclass[11pt, letterpaper]{article}
-\usepackage[top=25mm,bottom=22mm,left=17mm,right=17mm]{geometry}
-\setlength{\parindent}{0pt}
-\setcounter{secnumdepth}{0}
-\pagenumbering{gobble}
+${preamble}
 
 \begin{document}
 \begin{center}{\LARGE ${title}}\end{center}\vspace{12mm}
