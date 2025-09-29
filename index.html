@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Markdown to PDF</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css">
+        <style>
+            main {
+                display: flex;
+                flex-direction: column;
+            }
+
+            textarea {
+                white-space: pre;
+                overflow-wrap: scroll;
+                overflow-x: scroll;
+                resize: none !important;
+            }
+
+            #preamble {
+                height: 12em;
+            }
+
+            #main {
+                height: 25em;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Markdown to PDF</h1>
+        </header>
+        <main>
+            <label for="preamble">Preamble:</label>
+            <textarea id="preamble">\usepackage[top=25mm,bottom=22mm,left=17mm,right=17mm]{geometry}
+\setlength{\parindent}{0pt}
+\setcounter{secnumdepth}{0}
+\pagenumbering{gobble}</textarea>
+
+            <label for="title">Title:</label>
+            <input type="text" id="title"/>
+
+            <label for="main">Markdown:</label>
+            <textarea id="main"></textarea>
+
+            <button id="generate">Generate PDF</button>
+        </main>
+        <footer>
+            Powered by <a href="https://github.com/tweag/pandoc-wasm" target="_blank">pandoc-wasm</a> and <a href="https://github.com/SwiftLaTeX/SwiftLaTeX" target="_blank">SwiftLaTeX</a>.
+        </footer>
+        <script src="PdfTeXEngine.js"></script>
+        <script type="module">
+            import { pandoc } from "./pandoc.js";
+            
+            async function convert() {
+                document.getElementById("generate").innerText = "Generating...";
+                const engine = new PdfTeXEngine();
+                await engine.loadEngine();
+
+                const mainText = document.getElementById("main").value;
+                const title = document.getElementById("title").value;
+                const output = pandoc("-f markdown+pipe_tables+strikeout+tex_math_dollars -t latex", mainText);
+
+                const latex = String.raw`\documentclass[11pt, letterpaper]{article}
+\usepackage[top=25mm,bottom=22mm,left=17mm,right=17mm]{geometry}
+\setlength{\parindent}{0pt}
+\setcounter{secnumdepth}{0}
+\pagenumbering{gobble}
+
+\begin{document}
+\begin{center}{\LARGE ${title}}\end{center}\vspace{12mm}
+
+${output}
+
+\end{document}`;
+                engine.writeMemFSFile("main.tex", latex);
+                engine.setEngineMainFile("main.tex");
+                let r = await engine.compileLaTeX();
+                const pdfBlob = new Blob([r.pdf], { type: 'application/pdf' });
+                const pdfURL = URL.createObjectURL(pdfBlob);
+                window.open(pdfURL, '_blank');
+                document.getElementById("generate").innerText = "Generate PDF";
+            }
+
+            document.getElementById("generate").addEventListener('click', convert);
+        </script>
+    </body>
+</html>
